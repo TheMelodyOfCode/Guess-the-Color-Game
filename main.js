@@ -29,14 +29,36 @@ function pickColor(){
     return colors[pickColor];
 }
 
-
-/** when clicking on a square we get a random color */
+mainGame();
+function mainGame (){
+    $("#rgbCode").text(pickColor);
 for (let e = 0; e < square.length; e++ ){
     square[e].style.backgroundColor = colors[e];
-
     $(square[e]).on('click', function (){
         if (square[e].style.backgroundColor === pickedColor) {
-            alert("That's Correct !! ");
+            $(".square").off('click');
+            $("#rgbCode").fadeOut("slow").fadeIn("fast").text("That's Correct Dude!");
+            $("#gameheader").css({
+                backgroundColor: pickedColor
+            })
+            reset();
+        } else {
+            $(this).css({
+                backgroundColor: "#232323"
+            })
         }
     })
+}
+}
+
+
+function reset(){
+    colors = colorArray(squareNum);
+    pickedColor = pickColor();
+    $("rgbCode").text(pickedColor);
+    $("#gameheader").css({
+        backgroundColor: "#232323",
+    })
+    mainGame();
+
 }
