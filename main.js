@@ -1,8 +1,63 @@
 "use strict";
 
+
+let squareNum = 9;
+
+function num() {
+    if ($('#easyBTN').attr('class') === 'selected'){
+            squareNum = 3;
+    }
+    if ($('#normalBTN').attr('class') === 'selected'){
+            squareNum = 6;
+    }
+    if ($('#hardBTN').attr('class') === 'selected'){
+            squareNum = 12;
+    }
+    return squareNum;
+}
+num();
+
+$('#easyBTN').on('click', function () {
+    $(this).addClass('selected');
+    $('#normalBTN').removeClass('selected');
+    $('#hardBTN').removeClass('selected');
+    $(".square").remove();
+    app();
+})
+
+$('#normalBTN').on('click', function () {
+    $(this).addClass('selected');
+    $('#easyBTN').removeClass('selected');
+    $('#hardBTN').removeClass('selected');
+    $(".square").remove();
+    app();
+})
+$('#hardBTN').on('click', function () {
+    $(this).addClass('selected');
+    $('#easyBTN').removeClass('selected');
+    $('#normalBTN').removeClass('selected');
+    $(".square").remove();
+    app();
+})
+
+$("#reset").on('click', function (){
+    $(".square").remove();
+    app();
+})
+
+
+
+function app(){
+
+
+let count = 0;
+while (count < num()) {
+    $(".items").append('<div class="square"></div>');
+    count++;
+} 
+
 let square = $(".square");
-let squareNum = 6;
-let colors = colorArray(squareNum);
+let colors = colorArray(num());
 let pickedColor = pickColor();
 
 /** creates a random tone for each of the 3 colors */
@@ -29,10 +84,10 @@ function pickColor(){
     return colors[pickColor];
 }
 
-mainGame();
+
 function mainGame (){
     $("#rgbCode").text(pickColor);
-for (let e = 0; e < square.length; e++ ){
+for (let e = 0; e < num(); e++ ){
     square[e].style.backgroundColor = colors[e];
     $(square[e]).on('click', function (){
         if (square[e].style.backgroundColor === pickedColor) {
@@ -41,7 +96,7 @@ for (let e = 0; e < square.length; e++ ){
             $("#gameheader").css({
                 backgroundColor: pickedColor
             })
-            reset();
+            timeout();
         } else {
             $(this).css({
                 backgroundColor: "#232323"
@@ -51,14 +106,23 @@ for (let e = 0; e < square.length; e++ ){
 }
 }
 
-
 function reset(){
-    colors = colorArray(squareNum);
+    colors = colorArray(num());
     pickedColor = pickColor();
     $("rgbCode").text(pickedColor);
     $("#gameheader").css({
         backgroundColor: "#232323",
     })
     mainGame();
-
 }
+
+function timeout(){
+    setTimeout(function (){
+        reset();
+    }, 3000)
+}
+
+mainGame();
+} // app closing tag
+
+app();
